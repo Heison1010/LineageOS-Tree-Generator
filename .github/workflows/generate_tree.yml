@@ -46,7 +46,6 @@ jobs:
       contents: write
     steps:
     - name: Check Out
-      if: check-out
       uses: actions/checkout@v4
 
     - name: Update and install required packages
@@ -60,9 +59,9 @@ jobs:
       id: setup-gh
       run: |
         type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+        curl -fsSL https://github.com | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
         && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://github.com stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
         && sudo apt update \
         && sudo apt install gh -y
 
@@ -78,7 +77,7 @@ jobs:
     - name: Installing AOSPDTGEN
       id: setup-aosp-dtgen
       run: |
-        pip3 install aospdtgen
+        pip3 install aospdtgen --break-system-packages
 
     - name: Creating LineageOS Tree
       id: gen-dt
